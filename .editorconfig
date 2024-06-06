@@ -1,0 +1,15 @@
+# 设置通用的配置
+[*]
+# 使用制表符进行缩进
+indent_style = tab
+# 制表符宽度为4个空格
+tab_width = 4
+
+# Go 文件特定配置
+[*.go]
+# 设置缩进大小为2个空格
+indent_size = 2
+# 指定换行符为LF（Unix风格）
+end_of_line = lf
+# 移除尾部空白
+trim_trailing_whitespace = true

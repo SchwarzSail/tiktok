@@ -1,0 +1,16 @@
+# 换行符设置
+# 使用 LF（Unix）换行符
+* text eol=lf
+
+# Windows 批处理文件使用 CRLF 换行符
+*.bat text eol=crlf
+
+# 编码设置
+# 使用 UTF-8 编码
+*.txt text encoding=utf-8
+
+# 二进制文件设置
+# 图片、音频、视频等二进制文件
+*.jpg binary
+*.png binary
+*.mp3 binary

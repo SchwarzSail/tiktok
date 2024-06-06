@@ -1,0 +1,11 @@
+.dockerignore
+.github
+.git
+.vscode
+*.log
+.sql
+# Ignore binary files
+*.exe
+*.dll
+*.so
+
