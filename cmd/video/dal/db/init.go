@@ -5,7 +5,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
-	"tiktok/config"
+	"tiktok/cmd/video/config"
 )
 
 var DB *gorm.DB

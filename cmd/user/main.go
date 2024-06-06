@@ -36,7 +36,7 @@ func main() {
 	if err != nil {
 		klog.Fatal(err)
 	}
-	addr, err := net.ResolveTCPAddr("tcp", "127.0.0.1:8881")
+	addr, err := net.ResolveTCPAddr("tcp", conf.System.Host+":"+conf.System.Port)
 	if err != nil {
 		panic(err)
 	}

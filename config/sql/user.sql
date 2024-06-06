@@ -1,4 +1,5 @@
-CREATE TABLE tiktok.user
+CREATE DATABASE IF NOT EXISTS User;
+CREATE TABLE User.user
 (
     `id`         INT AUTO_INCREMENT PRIMARY KEY,
     `username`   varchar(255),
@@ -10,3 +11,4 @@ CREATE TABLE tiktok.user
     `deleted_at` timestamp
 ) engine = InnoDB
   default charset = utf8mb4;
+CREATE INDEX idx_username ON User.user (username);

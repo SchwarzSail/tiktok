@@ -2,7 +2,7 @@ package es
 
 import (
 	"github.com/olivere/elastic/v7"
-	"tiktok/config"
+	"tiktok/cmd/video/config"
 )
 
 var EsClient *elastic.Client

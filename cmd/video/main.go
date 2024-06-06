@@ -7,11 +7,11 @@ import (
 	etcd "github.com/kitex-contrib/registry-etcd"
 	"github.com/spf13/viper"
 	"net"
+	"tiktok/cmd/video/config"
 	"tiktok/cmd/video/dal/cache"
 	"tiktok/cmd/video/dal/db"
 	"tiktok/cmd/video/dal/es"
 	"tiktok/cmd/video/rpc"
-	"tiktok/config"
 	video "tiktok/kitex_gen/video/videoservice"
 )
 

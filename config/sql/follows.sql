@@ -1,4 +1,5 @@
-CREATE TABLE tiktok.follow
+CREATE DATABASE IF NOT EXISTS Social;
+CREATE TABLE Social.follow
 (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     user_id     INT,
@@ -8,3 +9,5 @@ CREATE TABLE tiktok.follow
     deleted_at  TIMESTAMP DEFAULT NULL
 ) engine = InnoDB
   default charset = utf8mb4;
+CREATE INDEX idx_user_id ON Social.follow(user_id);
+CREATE INDEX idx_follower_id ON Social.follow(follower_id);

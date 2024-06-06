@@ -6,9 +6,6 @@ import (
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/spf13/viper"
 	"tiktok/cmd/api/biz/rpc"
-	"tiktok/cmd/api/dal/cache"
-	"tiktok/cmd/api/dal/db"
-	"tiktok/cmd/api/dal/es"
 	"tiktok/cmd/api/dal/mq"
 	"tiktok/cmd/api/ws"
 	"tiktok/config"
@@ -31,9 +28,6 @@ func init() {
 	utils.InitLog()
 	//dal, 测试
 	mq.LinkRabbitmq()
-	cache.LinkRedis()
-	db.InitMySQL()
-	es.LinkEs()
 	rpc.Init()
 
 }
