@@ -5,7 +5,7 @@ import (
 	"github.com/cloudwego/kitex/client"
 	etcd "github.com/kitex-contrib/registry-etcd"
 	"github.com/pkg/errors"
-	"tiktok/config"
+	"tiktok/cmd/interaction/config"
 	"tiktok/internal/errno"
 	"tiktok/kitex_gen/video"
 	"tiktok/kitex_gen/video/videoservice"

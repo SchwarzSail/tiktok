@@ -4,11 +4,8 @@ import (
 	"context"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"tiktok/cmd/social/pack"
-	"tiktok/cmd/social/rpc"
 	"tiktok/cmd/social/service"
-	"tiktok/internal/errno"
 	"tiktok/kitex_gen/social"
-	"tiktok/kitex_gen/user"
 )
 
 // SocialServiceImpl implements the last service interface defined in the IDL.
@@ -31,36 +28,17 @@ func (s *SocialServiceImpl) Follow(ctx context.Context, req *social.FollowReques
 func (s *SocialServiceImpl) FollowList(ctx context.Context, req *social.FollowListRequest) (resp *social.FollowListResponse, err error) {
 	resp = social.NewFollowListResponse()
 	l := service.GetSocialService()
-	list, err := l.GetFollowList(ctx, req.UserId)
+	startIndex := int((req.PageNum - 1) * req.PageSize)
+	endIndex := startIndex + int(req.PageSize)
+	list, err := l.GetFollowList(ctx, req.UserId, startIndex, endIndex)
 	if err != nil {
 		klog.Error(err)
 		resp.BaseResp = pack.BuildBaseResp(err)
 		return resp, nil
 	}
-	startIndex := (req.PageNum - 1) * req.PageSize
-	endIndex := startIndex + req.PageSize
-	if startIndex >= int64(len(list)) {
-		err = errno.PageOutOfRange
-		klog.Error(err)
-		resp.BaseResp = pack.BuildBaseResp(err)
-		return resp, nil
-	}
-	if endIndex > int64(len(list)) {
-		endIndex = int64(len(list))
-	}
-	list = list[startIndex:endIndex]
-	users := make([]*user.User, len(list))
-	for i, data := range list {
-		u, err := rpc.GetUserInfo(ctx, &user.InfoRequest{Uid: data})
-		if err != nil {
-			klog.Error(err)
-			resp.BaseResp = pack.BuildBaseResp(err)
-			return resp, nil
-		}
-		users[i] = u
-	}
+
 	resp.BaseResp = pack.BuildBaseResp(nil)
-	resp.Users = users
+	resp.Users = list
 	return resp, nil
 }
 
@@ -68,36 +46,16 @@ func (s *SocialServiceImpl) FollowList(ctx context.Context, req *social.FollowLi
 func (s *SocialServiceImpl) FansList(ctx context.Context, req *social.FansListRequest) (resp *social.FansListResponse, err error) {
 	resp = social.NewFansListResponse()
 	l := service.GetSocialService()
-	list, err := l.GetFansList(ctx, req.Uid)
+	startIndex := int((req.PageNum - 1) * req.PageSize)
+	endIndex := startIndex + int(req.PageSize)
+	list, err := l.GetFansList(ctx, req.Uid, startIndex, endIndex)
 	if err != nil {
 		klog.Error(err)
 		resp.BaseResp = pack.BuildBaseResp(err)
 		return resp, nil
 	}
-	startIndex := (req.PageNum - 1) * req.PageSize
-	endIndex := startIndex + req.PageSize
-	if startIndex >= int64(len(list)) {
-		err = errno.PageOutOfRange
-		klog.Error(err)
-		resp.BaseResp = pack.BuildBaseResp(err)
-		return resp, nil
-	}
-	if endIndex > int64(len(list)) {
-		endIndex = int64(len(list))
-	}
-	list = list[startIndex:endIndex]
-	users := make([]*user.User, len(list))
-	for i, data := range list {
-		u, err := rpc.GetUserInfo(ctx, &user.InfoRequest{Uid: data})
-		if err != nil {
-			klog.Error(err)
-			resp.BaseResp = pack.BuildBaseResp(err)
-			return resp, nil
-		}
-		users[i] = u
-	}
 	resp.BaseResp = pack.BuildBaseResp(nil)
-	resp.Users = users
+	resp.Users = list
 	return resp, nil
 }
 
@@ -105,35 +63,15 @@ func (s *SocialServiceImpl) FansList(ctx context.Context, req *social.FansListRe
 func (s *SocialServiceImpl) FriendsList(ctx context.Context, req *social.FriendsListRequest) (resp *social.FriendsListResponse, err error) {
 	resp = social.NewFriendsListResponse()
 	l := service.GetSocialService()
-	list, err := l.GetFriendsList(ctx, req.Uid)
+	startIndex := int((req.PageNum - 1) * req.PageSize)
+	endIndex := startIndex + int(req.PageSize)
+	list, err := l.GetFriendsList(ctx, req.Uid, startIndex, endIndex)
 	if err != nil {
 		klog.Error(err)
 		resp.BaseResp = pack.BuildBaseResp(err)
 		return resp, nil
 	}
-	startIndex := (req.PageNum - 1) * req.PageSize
-	endIndex := startIndex + req.PageSize
-	if startIndex >= int64(len(list)) {
-		err = errno.PageOutOfRange
-		klog.Error(err)
-		resp.BaseResp = pack.BuildBaseResp(err)
-		return resp, nil
-	}
-	if endIndex > int64(len(list)) {
-		endIndex = int64(len(list))
-	}
-	list = list[startIndex:endIndex]
-	users := make([]*user.User, len(list))
-	for i, data := range list {
-		u, err := rpc.GetUserInfo(ctx, &user.InfoRequest{Uid: data})
-		if err != nil {
-			klog.Error(err)
-			resp.BaseResp = pack.BuildBaseResp(err)
-			return resp, nil
-		}
-		users[i] = u
-	}
 	resp.BaseResp = pack.BuildBaseResp(nil)
-	resp.Users = users
+	resp.Users = list
 	return resp, nil
 }

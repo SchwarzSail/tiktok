@@ -8,10 +8,10 @@ import (
 	"github.com/spf13/viper"
 	"log"
 	"net"
+	"tiktok/cmd/social/config"
 	"tiktok/cmd/social/dal/cache"
 	"tiktok/cmd/social/dal/db"
 	"tiktok/cmd/social/rpc"
-	"tiktok/config"
 	social "tiktok/kitex_gen/social/socialservice"
 )
 
@@ -19,7 +19,7 @@ func init() {
 	//初始化配置文件
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
-	viper.AddConfigPath("../config")
+	viper.AddConfigPath("config")
 	if err := viper.ReadInConfig(); err != nil {
 		panic(err)
 	}
@@ -41,7 +41,7 @@ func main() {
 		klog.Fatal(err)
 	}
 
-	addr, err := net.ResolveTCPAddr("tcp", "127.0.0.1:8884")
+	addr, err := net.ResolveTCPAddr("tcp", conf.System.Domain+":"+conf.System.Port)
 	if err != nil {
 		panic(err)
 	}

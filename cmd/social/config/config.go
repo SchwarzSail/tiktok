@@ -1,17 +1,11 @@
 package config
 
-import (
-	"github.com/spf13/viper"
-)
-
 var Config Conf
 
 type Conf struct {
 	System   *System `mapstructure:"system"`
 	Mysql    `mapstructure:"mysql"`
 	Redis    `mapstructure:"redis"`
-	Oss      `mapstructure:"oss"`
-	Es       `mapstructure:"es"`
 	Rabbitmq `mapstructure:"rabbitmq"`
 	Etcd     `mapstructure:"etcd"`
 }
@@ -37,20 +31,6 @@ type Redis struct {
 	RedisDbName   int    `mapstructure:"redisDbName"`
 }
 
-type Oss struct {
-	OssEndPoint        string `mapstructure:"OSS_END_POINT"`
-	OssAccessKeyId     string `mapstructure:"OSS_ACCESS_KEY_ID"`
-	OssAccessKeySecret string `mapstructure:"OSS_ACCESS_KEY_SECRET"`
-	OssBucket          string `mapstructure:"OSS_BUCKET"`
-}
-
-type Es struct {
-	UserName string `mapstructure:"esUserName"`
-	Password string `mapstructure:"esPassword"`
-	Host     string `mapstructure:"esHost"`
-	Port     string `mapstructure:"esPort"`
-}
-
 type Rabbitmq struct {
 	RabbitmqUser     string `mapstructure:"rabbitmqUserName"`
 	RabbitmqPassword string `mapstructure:"rabbitmqPassword"`
@@ -61,17 +41,4 @@ type Rabbitmq struct {
 type Etcd struct {
 	EtcdHost string `mapstruct:"etcdHost"`
 	EtcdPort string `mapstruct:"etcdPort"`
-}
-
-func InitConfig() {
-	//初始化配置文件
-	viper.SetConfigName("config")
-	viper.SetConfigType("yaml")
-	viper.AddConfigPath("/home/smallpig/projects/tiktok-v2/config")
-	if err := viper.ReadInConfig(); err != nil {
-		panic(err)
-	}
-	if err := viper.Unmarshal(&Config); err != nil {
-		panic(err)
-	}
 }

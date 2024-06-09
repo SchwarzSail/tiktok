@@ -1,0 +1,25 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: elastic-storage
+  labels:
+    app: elastic
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: Immediate
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: elastic-local
+  labels:
+    app: elastic
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 30Gi
+  storageClassName: elastic-storage
+  hostPath:
+    path: /data/elastic             # 在节点上创建此目录
+  persistentVolumeReclaimPolicy: Retain
+

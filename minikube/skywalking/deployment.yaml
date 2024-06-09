@@ -1,0 +1,47 @@
+oap:
+  image:
+    tag: 9.7.0
+  storageType: elasticsearch
+  replicas: 1
+  env:
+    SW_CORE_RECORD_DATA_TTL: "10"
+    SW_CORE_METRICS_DATA_TTL: "10"
+    SW_TELEMETRY: "prometheus"
+    SW_HEALTH_CHECKER: "default"
+    SW_ENABLE_UPDATE_UI_TEMPLATE: "true"
+  readinessProbe:
+    tcpSocket:
+      port: 12800
+    initialDelaySeconds: 30   # 减少初始延迟时间
+    periodSeconds: 10
+    failureThreshold: 10    # 降低失败阈值
+  resources:
+    requests:
+      memory: 1.5Gi   # 降低内存请求
+
+ui:
+  image:
+    tag: 9.7.0
+
+elasticsearch:
+  enabled: true
+  replicas: 1
+  minimumMasterNodes: 1
+  nodeGroup: "single-node"
+  persistence:
+    enabled: true
+  initResources:
+    requests:
+      memory: 1.5Gi
+  clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
+  volumeClaimTemplate:
+    metadata:
+      name: elasticsearch-data
+    spec:
+      storageClassName: elastic-storage
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 30G
+

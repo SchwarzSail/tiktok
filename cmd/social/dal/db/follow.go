@@ -49,7 +49,9 @@ func (dao *FollowDao) Cancel(uid, followerID int) (err error) {
 }
 
 func (dao *FollowDao) GetFollowers(uid int) (list []Follow, err error) {
-	err = dao.DB.Where("user_id = ?", uid).Find(&list).Error
+	err = dao.DB.Where("user_id = ?", uid).
+		Find(&list).
+		Error
 	if err != nil {
 		return nil, errors.Wrap(err, "db.GetFollowers failed")
 	}

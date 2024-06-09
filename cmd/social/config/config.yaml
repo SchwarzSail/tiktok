@@ -1,40 +1,27 @@
 system:
-    domain: "tiktok"
-    host: "0:0:0:0"
-    port: "10001"
+    domain: "social"
+    host: "0.0.0.0"
+    port: "8885"
 
 mysql:
     userName: "root"
     mysqlPassword: "123456"
-    dbName: "tiktok"
-    dbHost: "mysql"
+    dbName: "Social"
+    dbHost: "mysql-svc"
     dbPort: "3306"
 
 redis:
-    redisHost: "redis"
+    redisHost: "redis-svc"
     redisPort: "6379"
     redisPassword: "123456"
     redisDbName: 0
 
-oss:
-    OSS_END_POINT: ""
-    OSS_ACCESS_KEY_ID: ""
-    OSS_ACCESS_KEY_SECRET: ""
-    OSS_BUCKET: ""
-
-
-es:
-    esUserName: "elastic"
-    esPassword: "123456"
-    esHost: "es"
-    esPort: "9200"
-
 rabbitmq:
     rabbitmqUserName: "root"
     rabbitmqPassword: "123456"
-    rabbitmqHost: "rabbitmq"
+    rabbitmqHost: "rabbitmq-svc"
     rabbitmqPort: "5672"
 
 etcd:
-    etcdHost: "etcd"
+    etcdHost: "etcd-svc"
     etcdPort: "2379"

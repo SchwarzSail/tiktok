@@ -2,7 +2,7 @@ package cache
 
 import (
 	"github.com/redis/go-redis/v9"
-	"tiktok/config"
+	"tiktok/cmd/video/config"
 )
 
 var RedisClient *redis.Client

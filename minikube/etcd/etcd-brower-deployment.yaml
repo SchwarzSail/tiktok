@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: etcd-browser
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: etcd-browser
+  template:
+    metadata:
+      labels:
+        app: etcd-browser
+    spec:
+      containers:
+        - name: etcd-browser
+          image: rustyx/etcdv3-browser:latest
+          env:
+            - name: ETCD_HOST
+              value: 10.244.0.68
+            - name: ETCD_PORT
+              value: "2379"
+          ports:
+            - containerPort: 8081
+

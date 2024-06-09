@@ -2,7 +2,7 @@ package mq
 
 import (
 	"github.com/streadway/amqp"
-	"tiktok/config"
+	"tiktok/cmd/interaction/config"
 )
 
 var RabbitmqConn *amqp.Connection

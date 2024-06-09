@@ -4,7 +4,7 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
-	"tiktok/config"
+	"tiktok/cmd/social/config"
 )
 
 var DB *gorm.DB

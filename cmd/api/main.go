@@ -6,9 +6,9 @@ import (
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/spf13/viper"
 	"tiktok/cmd/api/biz/rpc"
+	"tiktok/cmd/api/config"
 	"tiktok/cmd/api/dal/mq"
 	"tiktok/cmd/api/ws"
-	"tiktok/config"
 	"tiktok/internal/utils"
 )
 
@@ -16,7 +16,7 @@ func init() {
 	//配置文件初始化
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
-	viper.AddConfigPath("../config")
+	viper.AddConfigPath("config")
 	if err := viper.ReadInConfig(); err != nil {
 		panic(err)
 	}
@@ -26,16 +26,17 @@ func init() {
 
 	//logger
 	utils.InitLog()
-	//dal, 测试
+
 	mq.LinkRabbitmq()
 	rpc.Init()
 
 }
 
 func main() {
+	conf := config.Config
 	go ws.Manager.Start()
 	h := server.Default(
-		server.WithHostPorts("0.0.0.0:10001"),
+		server.WithHostPorts(conf.System.Host+":"+conf.System.Port),
 		server.WithMaxRequestBodySize(419430400),
 	)
 

@@ -1,38 +1,29 @@
-# 第一阶段：构建阶段
-FROM golang:1.21 as builder
-
+# 使用 skywalking-go 基础镜像
+FROM apache/skywalking-go:0.4.0-go1.22
+# 定义构建参数
+ARG SERVICE
 # 设置环境变量
 ENV GO111MODULE=on \
     CGO_ENABLED=0 \
     GOPROXY=https://goproxy.cn,direct \
     GOOS=linux \
-    GOARCH=amd64
+    GOARCH=amd64 \
+    SW_AGENT_REPORTER_GRPC_BACKEND_SERVICE=skywalking-oap.skywalking:11800 \
+    SW_AGENT_NAME="${SERVICE}"
 
 # 创建工作目录
 RUN mkdir -p /app
 WORKDIR /app
 
-# 定义构建参数
-ARG SERVICE
-
-# 复制所有文件
+# 复制所有文件到工作目录
 COPY . .
 
-# 安装依赖并编译
+# 下载依赖
 RUN go mod tidy
-RUN mkdir -p output || exit 1
-RUN cd "cmd/${SERVICE}" && go build -o "../../output/${SERVICE}"
 
-# 第二阶段：运行阶段
-FROM alpine:latest
+# 注入 SkyWalking agent
+RUN skywalking-go-agent -inject ./
 
-
-# 设置工作目录
-WORKDIR /app
-
-# 复制依赖文件和可执行文件
-COPY --from=builder /app/config /app/config
-COPY --from=builder /app/output /app/output
-
-
+# 编译应用程序
+RUN cd ./cmd/${SERVICE} && go build -toolexec="skywalking-go-agent" -o ./${SERVICE}
 

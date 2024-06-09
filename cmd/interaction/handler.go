@@ -52,21 +52,11 @@ func (s *InteractionServiceImpl) Like(ctx context.Context, req *interaction.Like
 func (s *InteractionServiceImpl) LikeList(ctx context.Context, req *interaction.LikeListRequest) (resp *interaction.LikeListResponse, err error) {
 	resp = interaction.NewLikeListResponse()
 	l := service.GetLikesService()
-	vids, err := l.GetLikeList(ctx, req.UserId, req.PageNum, req.PageSize)
+	list, err := l.GetLikeList(ctx, req.UserId, req.PageNum, req.PageSize)
 	if err != nil {
 		resp.BaseResp = pack.BuildBaseResp(err)
+		klog.Error(err)
 		return resp, nil
-	}
-	//根据vids通过rpc获取数据
-	list := make([]*video.Video, 0)
-	for _, vid := range vids {
-		v, err := rpc.GetVideoInfo(ctx, &video.GetVideoInfoRequest{VideoId: vid})
-		if err != nil {
-			klog.Error(err)
-			resp.BaseResp = pack.BuildBaseResp(err)
-			return resp, nil
-		}
-		list = append(list, v)
 	}
 	resp.BaseResp = pack.BuildBaseResp(nil)
 	resp.Videos = list

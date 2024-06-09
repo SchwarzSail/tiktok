@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: user-service
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: user-service
+    template:
+        metadata:
+            labels:
+                app: user-service
+        spec:
+            containers:
+                - name: user-service
+                  image: user_image:latest
+                  imagePullPolicy: Never # 添加镜像拉取策略
+                  ports:
+                      - containerPort: 8882
+                  command: ["sh", "-c", "cd cmd/user && ./user"] # 添加启动命令
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: user-service
+spec:
+    ports:
+        - port: 8882
+          targetPort: 8882
+    selector:
+        app: user-service

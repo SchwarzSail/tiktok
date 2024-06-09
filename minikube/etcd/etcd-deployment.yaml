@@ -1,0 +1,81 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: etcd-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: etcd-storage
+  hostPath:
+    path: /data/etcd
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: etcd-storage
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: Immediate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: etcd-pvc
+spec:
+  storageClassName: etcd-storage
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: etcd
+spec:
+  replicas: 1
+  serviceName: etcd
+  selector:
+    matchLabels:
+      app: etcd
+  template:
+    metadata:
+      labels:
+        app: etcd
+    spec:
+      containers:
+        - name: etcd
+          image: quay.io/coreos/etcd:v3.5.0
+          env:
+            - name: ETCD_DATA_DIR
+              value: /var/lib/etcd
+            - name: ETCD_ADVERTISE_CLIENT_URLS
+              value: http://etcd:2379
+            - name: ETCD_LISTEN_CLIENT_URLS
+              value: http://0.0.0.0:2379
+          ports:
+            - containerPort: 2379
+          volumeMounts:
+            - name: etcd-pv
+              mountPath: /var/lib/etcd
+      volumes:
+        - name: etcd-pv
+          persistentVolumeClaim:
+            claimName: etcd-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: etcd-svc
+spec:
+  selector:
+    app: etcd
+  ports:
+    - protocol: TCP
+      port: 2379
+      targetPort: 2379
+      nodePort: 30002
+  type: NodePort

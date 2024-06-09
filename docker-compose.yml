@@ -111,8 +111,8 @@ services:
         container_name: user
         restart: always
         ports:
-            - "10002:10002"
-        command: sh -c 'cd /app/output && ./user'
+            - "8882:8882"
+        command: sh -c 'cd cmd/user && ./user'
 
     video:
         image: video_image

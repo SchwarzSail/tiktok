@@ -1,9 +1,5 @@
 package config
 
-import (
-	"github.com/spf13/viper"
-)
-
 var Config Conf
 
 type Conf struct {
@@ -61,17 +57,4 @@ type Rabbitmq struct {
 type Etcd struct {
 	EtcdHost string `mapstruct:"etcdHost"`
 	EtcdPort string `mapstruct:"etcdPort"`
-}
-
-func InitConfig() {
-	//初始化配置文件
-	viper.SetConfigName("config")
-	viper.SetConfigType("yaml")
-	viper.AddConfigPath("/home/smallpig/projects/tiktok-v2/config")
-	if err := viper.ReadInConfig(); err != nil {
-		panic(err)
-	}
-	if err := viper.Unmarshal(&Config); err != nil {
-		panic(err)
-	}
 }
