@@ -10,6 +10,7 @@ import (
 	"tiktok/kitex_gen/interaction"
 	"tiktok/kitex_gen/interaction/interactionservice"
 	"tiktok/kitex_gen/video"
+	"tiktok/pkg/constants"
 )
 
 func InitInteractionPRC() {
@@ -18,7 +19,7 @@ func InitInteractionPRC() {
 	if err != nil {
 		panic(err)
 	}
-	interactionClient, err = interactionservice.NewClient("interaction", client.WithResolver(r))
+	interactionClient, err = interactionservice.NewClient("interaction", client.WithResolver(r), client.WithHostPorts(constants.InteractionServiceIP))
 	if err != nil {
 		panic(err)
 	}

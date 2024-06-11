@@ -9,6 +9,7 @@ import (
 	"tiktok/internal/errno"
 	"tiktok/kitex_gen/video"
 	"tiktok/kitex_gen/video/videoservice"
+	"tiktok/pkg/constants"
 )
 
 func InitVideoRPC() {
@@ -17,7 +18,7 @@ func InitVideoRPC() {
 	if err != nil {
 		panic(err)
 	}
-	videoClient, err = videoservice.NewClient("video", client.WithResolver(r))
+	videoClient, err = videoservice.NewClient("video", client.WithResolver(r), client.WithHostPorts(constants.VideoServiceIP))
 	if err != nil {
 		panic(err)
 	}

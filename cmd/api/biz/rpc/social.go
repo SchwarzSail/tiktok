@@ -10,6 +10,7 @@ import (
 	"tiktok/kitex_gen/social"
 	"tiktok/kitex_gen/social/socialservice"
 	"tiktok/kitex_gen/user"
+	"tiktok/pkg/constants"
 )
 
 func InitSocialRPC() {
@@ -18,7 +19,7 @@ func InitSocialRPC() {
 	if err != nil {
 		panic(err)
 	}
-	socialClient, err = socialservice.NewClient("social", client.WithResolver(r))
+	socialClient, err = socialservice.NewClient("social", client.WithResolver(r), client.WithHostPorts(constants.SocialServiceIP))
 	if err != nil {
 		panic(err)
 	}

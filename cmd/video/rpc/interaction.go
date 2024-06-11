@@ -9,6 +9,7 @@ import (
 	"tiktok/internal/errno"
 	"tiktok/kitex_gen/interaction"
 	"tiktok/kitex_gen/interaction/interactionservice"
+	"tiktok/pkg/constants"
 )
 
 func InitInteractionRPC() {
@@ -17,7 +18,7 @@ func InitInteractionRPC() {
 	if err != nil {
 		panic(err)
 	}
-	interactionClient, err = interactionservice.NewClient("interaction", client.WithResolver(r))
+	interactionClient, err = interactionservice.NewClient("interaction", client.WithResolver(r), client.WithHostPorts(constants.InteractionServiceIP))
 	if err != nil {
 		panic(err)
 	}

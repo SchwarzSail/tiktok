@@ -45,7 +45,7 @@ func main() {
 		klog.Fatal(err)
 	}
 
-	addr, err := net.ResolveTCPAddr("tcp", conf.System.Domain+":"+conf.System.Port)
+	addr, err := net.ResolveTCPAddr("tcp", conf.System.Host+":"+conf.System.Port)
 	if err != nil {
 		panic(err)
 	}

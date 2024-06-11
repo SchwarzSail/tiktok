@@ -9,6 +9,7 @@ import (
 	"tiktok/internal/errno"
 	"tiktok/kitex_gen/user"
 	"tiktok/kitex_gen/user/userservice"
+	"tiktok/pkg/constants"
 )
 
 func InitUserRPC() {
@@ -17,7 +18,7 @@ func InitUserRPC() {
 	if err != nil {
 		panic(err)
 	}
-	userClient, err = userservice.NewClient("user", client.WithResolver(r))
+	userClient, err = userservice.NewClient("user", client.WithResolver(r), client.WithHostPorts(constants.UserServiceIP))
 	if err != nil {
 		panic(err)
 	}
