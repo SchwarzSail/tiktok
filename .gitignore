@@ -35,8 +35,8 @@ _testmain.go
 /output
 *.local.yml
 dumped_hertz_remote_config.json
-cmd/**/output
-
+/cmd/**/output
+/cmd/**/config
 
 /config/es/data/nodes/
 /config/mysql/data/

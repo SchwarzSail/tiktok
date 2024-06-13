@@ -12,13 +12,21 @@ spec:
             labels:
                 app: user-service
         spec:
+            initContainers:
+                - name: check-skywalking
+                  image: busybox
+                  command:
+                      - sh
+                      - -c
+                      - |
+                          until nc -z -v skywalking-oap.skywalking 11800; do echo waiting for skywalking; sleep 2; done
             containers:
                 - name: user-service
                   image: user_image:latest
-                  imagePullPolicy: Never # 添加镜像拉取策略
+                  imagePullPolicy: Never
                   ports:
                       - containerPort: 8882
-                  command: ["sh", "-c", "cd cmd/user && ./user"] # 添加启动命令
+                  command: ["sh", "-c", "cd cmd/user && ./user"]
 ---
 apiVersion: v1
 kind: Service

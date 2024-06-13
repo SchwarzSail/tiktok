@@ -12,6 +12,14 @@ spec:
             labels:
                 app: social-service
         spec:
+            initContainers:
+                -   name: check-skywalking
+                    image: busybox
+                    command:
+                        - sh
+                        - -c
+                        - |
+                            until nc -z -v skywalking-oap.skywalking 11800; do echo waiting for skywalking; sleep 2; done
             containers:
                 - name: social-service
                   image: social_image:latest
