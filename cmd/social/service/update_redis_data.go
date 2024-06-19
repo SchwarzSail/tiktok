@@ -8,9 +8,10 @@ import (
 	"tiktok/cmd/social/dal/db"
 )
 
+// 将用户的关注列表和粉丝列表从mysql加载到redis
 func (s *SocialService) UpdateRedisData(ctx context.Context, uid string) (err error) {
 	if ok := cache.IsExistFollowKey(ctx, uid); !ok {
-		//从数据库获取数据到redis
+		//从数据库获取所有关注人的id
 		followDao := db.NewFollowDao(ctx)
 		userID, _ := strconv.Atoi(uid)
 		list, err := followDao.GetFollowers(userID)
@@ -21,6 +22,7 @@ func (s *SocialService) UpdateRedisData(ctx context.Context, uid string) (err er
 		for i, v := range list {
 			followerIDs[i] = strconv.Itoa(v.FollowerID)
 		}
+		//加载到redis
 		if err = cache.UpdateFollowers(ctx, uid, followerIDs); err != nil {
 			return errors.WithMessage(err, "service.UpdateRedisData failed")
 		}

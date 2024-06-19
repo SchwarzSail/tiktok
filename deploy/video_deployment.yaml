@@ -26,6 +26,7 @@ spec:
                   imagePullPolicy: Never # 添加镜像拉取策略
                   ports:
                       - containerPort: 8883
+                      - containerPort: 6060
                   command: ["sh", "-c", "cd cmd/video && ./video"] # 添加启动命令
 ---
 apiVersion: v1
@@ -34,7 +35,12 @@ metadata:
     name: video-service
 spec:
     ports:
-        - port: 8883
+        - name: http
+          port: 8883
           targetPort: 8883
+        - name: pprof
+          port: 6060
+          targetPort: 6060
     selector:
         app: video-service
+

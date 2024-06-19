@@ -11,7 +11,7 @@ import (
 )
 
 func (s *SocialService) Follow(ctx context.Context, uid, followID string, actionType string) (err error) {
-	//保证redis中有数据
+	//保证redis中包含用户的关注列表和粉丝列表
 	if err = s.UpdateRedisData(ctx, uid); err != nil {
 		return errors.WithMessage(err, "service.Follow failed")
 	}
@@ -51,7 +51,7 @@ func (s *SocialService) Follow(ctx context.Context, uid, followID string, action
 		}
 		return nil
 	}
-	//先判断是否关注过
+	//取关
 	if ok := cache.IsExistFollower(ctx, uid, followID); !ok {
 		return errno.NotFollowed
 	}

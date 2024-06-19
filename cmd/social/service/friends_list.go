@@ -22,8 +22,8 @@ func (s *SocialService) GetFriendsList(ctx context.Context, uid string, startInd
 		err = errno.PageOutOfRange
 		return nil, err
 	}
-	if endIndex > len(list) {
-		endIndex = len(list)
+	if endIndex > len(uids) {
+		endIndex = len(uids)
 	}
 	uids = uids[startIndex:endIndex]
 	list = make([]*user.User, len(uids))

@@ -11,6 +11,10 @@ type Base struct {
 	Msg  string `json:"msg"`
 }
 
+type BaseResp struct {
+	Base Base `json:"base"`
+}
+
 type RespWithData struct {
 	Base Base `json:"base"`
 	Data any  `json:"data"`
@@ -23,17 +27,21 @@ type DataList struct {
 
 func RespError(c *app.RequestContext, err error) {
 	Errno := errno.ConvertErr(err)
-	c.JSON(consts.StatusOK, Base{
-		Code: Errno.ErrCode,
-		Msg:  Errno.ErrMsg,
+	c.JSON(consts.StatusOK, BaseResp{
+		Base: Base{
+			Code: Errno.ErrCode,
+			Msg:  Errno.ErrMsg,
+		},
 	})
 }
 
 func RespSuccess(c *app.RequestContext) {
 	Errno := errno.Success
-	c.JSON(consts.StatusOK, Base{
-		Code: Errno.ErrCode,
-		Msg:  Errno.ErrMsg,
+	c.JSON(consts.StatusOK, BaseResp{
+		Base: Base{
+			Code: Errno.ErrCode,
+			Msg:  Errno.ErrMsg,
+		},
 	})
 }
 

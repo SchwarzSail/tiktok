@@ -69,7 +69,7 @@ func IsExistFans(ctx context.Context, uid, fansID string) (ok bool) {
 }
 
 func AddFan(ctx context.Context, uid, fanID string) (err error) {
-	err = RedisClient.SAdd(ctx, FollowerKey(uid), fanID).Err()
+	err = RedisClient.SAdd(ctx, FansKey(uid), fanID).Err()
 	if err != nil {
 		return errors.Wrap(err, "cache.AddFan failed")
 	}
@@ -77,7 +77,7 @@ func AddFan(ctx context.Context, uid, fanID string) (err error) {
 }
 
 func CancelFan(ctx context.Context, uid, fanID string) (err error) {
-	err = RedisClient.SRem(ctx, FollowerKey(uid), fanID).Err()
+	err = RedisClient.SRem(ctx, FansKey(uid), fanID).Err()
 	if err != nil {
 		return errors.Wrap(err, "cache.CancelFan failed")
 	}
@@ -87,7 +87,7 @@ func CancelFan(ctx context.Context, uid, fanID string) (err error) {
 func UpdateFans(ctx context.Context, uid string, fansID []string) (err error) {
 	txn := RedisClient.TxPipeline()
 	for _, data := range fansID {
-		if err = txn.SAdd(ctx, FollowerKey(uid), data).Err(); err != nil {
+		if err = txn.SAdd(ctx, FansKey(uid), data).Err(); err != nil {
 			return errors.Wrap(err, "cache.UpdateFans failed")
 		}
 	}
@@ -95,7 +95,7 @@ func UpdateFans(ctx context.Context, uid string, fansID []string) (err error) {
 	if err != nil {
 		return errors.Wrap(err, "cache.UpdateFans failed")
 	}
-	RedisClient.Expire(ctx, FollowerKey(uid), 10*time.Minute)
+	RedisClient.Expire(ctx, FansKey(uid), 10*time.Minute)
 	return nil
 }
 

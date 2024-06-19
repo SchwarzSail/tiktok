@@ -22,8 +22,8 @@ func (s *SocialService) GetFansList(ctx context.Context, uid string, startIndex,
 		err = errno.PageOutOfRange
 		return nil, err
 	}
-	if endIndex > len(list) {
-		endIndex = len(list)
+	if endIndex > len(uids) {
+		endIndex = len(uids)
 	}
 	uids = uids[startIndex:endIndex]
 	list = make([]*user.User, len(uids))

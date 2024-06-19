@@ -6,7 +6,10 @@ import (
 	"github.com/cloudwego/kitex/server"
 	etcd "github.com/kitex-contrib/registry-etcd"
 	"github.com/spf13/viper"
+	"log"
 	"net"
+	"net/http"
+	_ "net/http/pprof"
 	"tiktok/cmd/video/config"
 	"tiktok/cmd/video/dal/cache"
 	"tiktok/cmd/video/dal/db"
@@ -35,6 +38,9 @@ func init() {
 	klog.SetLevel(klog.LevelDebug)
 }
 func main() {
+	go func() {
+		log.Println(http.ListenAndServe("0.0.0.0:6060", nil))
+	}()
 	conf := config.Config
 	r, err := etcd.NewEtcdRegistry([]string{conf.EtcdHost + ":" + conf.EtcdPort})
 	if err != nil {
@@ -48,7 +54,6 @@ func main() {
 	svr := video.NewServer(new(VideoServiceImpl), server.WithServiceAddr(addr), server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: "video"}), server.WithRegistry(r))
 
 	err = svr.Run()
-
 	if err != nil {
 		panic(err)
 	}
