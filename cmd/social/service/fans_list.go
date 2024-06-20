@@ -18,7 +18,7 @@ func (s *SocialService) GetFansList(ctx context.Context, uid string, startIndex,
 	if err != nil {
 		return nil, errors.WithMessage(err, "service.GetFansList failed")
 	}
-	if startIndex >= len(uids) {
+	if startIndex > len(uids) {
 		err = errno.PageOutOfRange
 		return nil, err
 	}

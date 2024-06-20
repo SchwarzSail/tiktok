@@ -18,7 +18,7 @@ func (s *SocialService) GetFriendsList(ctx context.Context, uid string, startInd
 	if err != nil {
 		return nil, errors.WithMessage(err, "service.GetFriendsList failed")
 	}
-	if startIndex >= len(uids) {
+	if startIndex > len(uids) {
 		err = errno.PageOutOfRange
 		return nil, err
 	}

@@ -18,7 +18,7 @@ func (s *SocialService) GetFollowList(ctx context.Context, uid string, startInde
 	if err != nil {
 		return nil, errors.WithMessage(err, "service.FollowList failed")
 	}
-	if startIndex >= len(uids) {
+	if startIndex > len(uids) {
 		err = errno.PageOutOfRange
 		return nil, err
 	}

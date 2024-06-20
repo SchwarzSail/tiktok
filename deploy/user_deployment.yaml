@@ -26,6 +26,7 @@ spec:
                   imagePullPolicy: Never
                   ports:
                       - containerPort: 8882
+                      - containerPort: 6060
                   command: ["sh", "-c", "cd cmd/user && ./user"]
 ---
 apiVersion: v1
@@ -34,7 +35,11 @@ metadata:
     name: user-service
 spec:
     ports:
-        - port: 8882
+        - name: http
+          port: 8882
           targetPort: 8882
+        - name: pprof
+          port: 6060
+          targetPort: 6060
     selector:
         app: user-service
