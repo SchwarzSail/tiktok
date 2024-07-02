@@ -112,7 +112,7 @@ services:
         restart: always
         ports:
             - "8882:8882"
-        command: sh -c 'cd cmd/user && ./user'
+        command: sh -c './user'
 
     video:
         image: video_image

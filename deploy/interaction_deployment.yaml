@@ -26,7 +26,7 @@ spec:
                   imagePullPolicy: Never # 添加镜像拉取策略
                   ports:
                       - containerPort: 8884
-                  command: ["sh", "-c", "cd cmd/interaction && ./interaction"] # 添加启动命令
+                  command: ["sh", "-c", "./interaction"] # 添加启动命令
 ---
 apiVersion: v1
 kind: Service
